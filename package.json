@@ -1,0 +1,17 @@
+{
+  "name": "hi-chat",
+  "version": "1.0.0",
+  "description": "This project is based on an event driven system called socket.io and also developing this project helps you understand events on a deeper level. By the way! Its a chat app go and enjoy messaging.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Mc Spraint",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "socket.io": "^4.0.1"
+  }
+}
