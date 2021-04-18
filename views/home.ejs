@@ -70,13 +70,13 @@ user-scalable=no">                                                              
                 position:relative;
                 flex-grow:3;
          }
-.msg{
+        .msg{
                  padding:14px 14px 14px 14px;
                  max-width:300px;
                  margin-top:3px;                                                                         border-radius:15px;
          }
          .left{
-                 background-color:grey;
+                 background-color:#c0c0c0;
                  float:left;
                  clear:both;
                  margin-left:3px;
@@ -114,8 +114,7 @@ user-scalable=no">                                                              
 </div>
 
 <div id="sndbtn">                                                                       
-<input style="border:none;  border-radius:15px;" type="text" class="message" id="message
-"></input>
+<input style="border:none;  border-radius:15px;" type="text" class="message" id="message"></input>
 <button onclick="sendMsg()">SEND</button>
 
 </div>
@@ -147,12 +146,9 @@ const apend=(msg,position)=>{
 //After the data is broadcasted,now its handled here on the client side(step: 4)
         client.on('message', (data)=>{
                         apend(data,"left");
-                                                                                                /*      var p = document.createElement("p");
-                p.innerHTML=data
-                document.getElementById("dv").appendChild(p);*/
-
 
                 });
-                                                                                        </script>
+                                                                   
+</script>
 </body>
 </html>
