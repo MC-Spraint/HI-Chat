@@ -1,154 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-        <title>IO</title>                                                                       
-        <script src="https://cdn.socket.io/socket.io-3.0.1.min.js" defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>IO</title>
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js" defer></script>
+    <script src="/socket.io/socket.io.js"></script>
 
-
-<style>  body{
-                 background-color:#3b4990;
-
-}
-         #header{
-                 position:absolute;
-                 top:0;
-                 right:0;
-                 left:0;
-                 padding:5px;
-                 background-color:black;
-                 color: white;
-                 opacity:80%;
-}
-         #sndbtn{
-                 position:fixed;
-                 left:0;
-                 right:0;
-                 bottom:0;
-                 height:30px;
-                 padding:8px;
-                 background-color:grey;
-                 display:flex;
-
-         }
-         #dv{
-                background-color:white;
-                margin-top:80px;
-                margin:auto;
-                width:75%;
-                height:1000px;
-
-                overflow-y:auto;
-                border-radius:0;
-
-
+    <style>
+        body {
+            background-color: #3b4990;
         }
 
-         @media screen and (max-width:600px){
-                 #dv{
-                         margin:auto;
-                         width:95%;
-                         height:680px;}
-         }
+        #header {
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            padding: 5px;
+            background-color: black;
+            color: white;
+            opacity: 80%;
+        }
 
-         button{
-                background-color:black;
-                color:white;
-                border-radius:8px;
-                border:black;
-                position:relative;
-                width:76px;
-                height:30px;
-                outline:none;
+        #sndbtn {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 30px;
+            padding: 8px;
+            background-color: grey;
+            display: flex;
+        }
 
+        #dv {
+            background-color: white;
+            margin-top: 80px;
+            margin: auto;
+            width: 75%;
+            height: 1000px;
+            overflow-y: auto;
+            border-radius: 0;
+        }
 
-         }
-         input:focus{outline:none;}
-         input{
-                padding:7px;
-                position:relative;
-                flex-grow:3;
-         }
-        .msg{
-                 padding:14px 14px 14px 14px;
-                 max-width:300px;
-                 margin-top:3px;                                                                         border-radius:15px;
-         }
-         .left{
-                 background-color:#c0c0c0;
-                 float:left;
-                 clear:both;
-                 margin-left:3px;
-                 margin-bottom:3px;
-         }
-         .right{
-                 color:white;
-                 background-color:#436eee;
-                 float:right;
-                 clear:both;
-                 margin-right:3px;
-                 margin-bottom:3px;
-         }
-         #plholder{
-                 margin-top:80px;                                                       
-         }
+        @media screen and (max-width: 600px) {
+            #dv {
+                margin: auto;
+                width: 95%;
+                height: 680px;
+            }
+        }
 
-</style>
+        button {
+            background-color: black;
+            color: white;
+            border-radius: 8px;
+            border: none;
+            width: 76px;
+            height: 30px;
+            outline: none;
+        }
 
+        input {
+            padding: 7px;
+            flex-grow: 3;
+            border: none;
+            border-radius: 15px;
+            outline: none;
+        }
+
+        .msg {
+            padding: 14px;
+            max-width: 300px;
+            margin-top: 3px;
+            border-radius: 15px;
+        }
+
+        .left {
+            background-color: #c0c0c0;
+            float: left;
+            clear: both;
+            margin-left: 3px;
+            margin-bottom: 3px;
+        }
+
+        .right {
+            color: white;
+            background-color: #436eee;
+            float: right;
+            clear: both;
+            margin-right: 3px;
+            margin-bottom: 3px;
+        }
+
+        #plholder {
+            margin-top: 80px;
+        }
+    </style>
 </head>
 
 <body>
-        <div id="header">
-                <center>
-               <h2>
-               HI-Ch@t
-               </h2>
-               </center>
-        </div>
-        <div id="plholder">                                                                     </div>                                                                          
-<div id="dv">
+    <div id="header">
+        <center>
+            <h2>HI-Ch@t</h2>
+        </center>
+    </div>
 
+    <div id="plholder"></div>
 
+    <div id="dv"></div>
 
-</div>
+    <div id="sndbtn">
+        <input type="text" class="message" id="message" placeholder="Type a message">
+        <button onclick="sendMsg()">SEND</button>
+    </div>
 
-<div id="sndbtn">                                                                       
-<input style="border:none;  border-radius:15px;" type="text" class="message" id="message"></input>
-<button onclick="sendMsg()">SEND</button>
+    <script>
+        const client = io();
 
-</div>
+        const apend = (msg, position) => {
+            const msgelem = document.createElement("div");
+            msgelem.innerText = msg;
+            msgelem.classList.add("msg");
+            msgelem.classList.add(position);
+            document.getElementById("dv").append(msgelem);
+        };
 
-<script src= "/socket.io/socket.io.js" ></script>
-                <script>
+        // Sends a message to the server
+        const sendMsg = function () {
+            const msg = document.getElementById('message').value;
+            apend(msg, "right");
+            client.emit('message', msg);
+            document.getElementById('message').value = "";
+        };
 
-        const client=io();
-
-
-const apend=(msg,position)=>{
-                msgelem=document.createElement("div");
-                msgelem.innerText=msg
-                msgelem.classList.add("msg")
-                msgelem.classList.add(position)
-                dv.append(msgelem)
-                        }
-
-
-
-
-//'message' event gets fired from here and sent to the server(step: 1)
-        const sendMsg =  function(){
-                msg= document.getElementById('message').value;
-                                        apend(msg,"right");
-                client.emit('message',msg);
-                document.getElementById('message').value="";
-                };
-//After the data is broadcasted,now its handled here on the client side(step: 4)
-        client.on('message', (data)=>{
-                        apend(data,"left");
-
-                });
-                                                                   
-</script>
+        // Handles incoming messages
+        client.on('message', (data) => {
+            apend(data, "left");
+        });
+    </script>
 </body>
+
 </html>
